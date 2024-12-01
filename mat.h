@@ -17,10 +17,10 @@ class Mat3 {
 	//---[ Private Variable Declarations ]-----------------
 
 		// matrix elements in row major order
-	T		n[9];
+	
 
 public:
-	
+	T		n[9];
 	//---[ Constructors ]----------------------------------
 
 	Mat3()
@@ -54,7 +54,7 @@ public:
 
 	//---[ Ordering Methods ]------------------------------
 
-	Mat3<T> transpose() const { return Mat3<T>(n[0],n[3],n[6],n[1],n[4],n[7],n[2],n[5],n[8]) }
+	Mat3<T> transpose() const { return Mat3<T>(n[0], n[3], n[6], n[1], n[4], n[7], n[2], n[5], n[8]); }
 	double trace() const { return n[0]+n[4]+n[8]; }
 	
 	//---[ GL Matrix ]-------------------------------------
