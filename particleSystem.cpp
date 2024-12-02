@@ -64,11 +64,12 @@ void ParticleSystem::resetSimulation(float t)
 /** Compute forces and update particles **/
 void ParticleSystem::computeForcesAndUpdateParticles(float t)
 {
-    if (!simulate) return;
+    if (!simulate ) return;
+    if (!bakedParticles[t].empty()) return;
 
     Vec3f gravity(0.0f, 0.0f, -9.8f); // Gravity force
     float deltaTime = 1.0f / bake_fps;
-    Vec3f wind (4.0f, 0.0f, 0.0f); // Wind force
+    Vec3f wind (5.0f, 0.0f, 0.0f); // Wind force
     // Update particles
     for (auto& particle : particles) {
         particle.update(deltaTime, gravity); // Apply gravity as the force
@@ -88,16 +89,31 @@ void ParticleSystem::drawParticles(float t)
 {
     if (!simulate) return;
     glPushMatrix();
-    glColor3b(255, 0, 0);
-    glPointSize(10.0);
-    glBegin(GL_POINTS);
-    for (const auto& particle : particles) {
+    glColor3b(255, 255, 0);
 
-        Vec3f pos = particle.getPosition();
-        glVertex3f(pos[0], pos[1], pos[2]);
-    }
-    glEnd();
-    glPopMatrix();
+    glBegin(GL_POINTS);
+    if (bakedParticles[t].empty()) {
+        for (const auto& particle : particles) {
+            glPointSize(particle.getSize());
+            Vec3f pos = particle.getPosition();
+            //store in the baked particles
+            bakedParticles[t].push_back(particle);
+            glVertex3f(pos[0], pos[1], pos[2]);
+        }
+        glEnd();
+        glPopMatrix();
+    }else{
+		for (const auto& particle : bakedParticles[t]) {
+			glPointSize(particle.getSize());
+			Vec3f pos = particle.getPosition();
+			glVertex3f(pos[0], pos[1], pos[2]);
+		}
+        clearBaked();
+        glEnd();
+        glPopMatrix();
+	}
+
+
 }
 
 /** Adds the current configuration of particles to
@@ -128,13 +144,16 @@ void ParticleSystem::spawnParticle(const Vec3f& pos , const Vec3f& vel, float si
 
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<float> posDist(-1.0f, 1.0f);
-        std::uniform_real_distribution<float> velDist(-0.3f, 0.3f);
+        std::uniform_real_distribution<float> posDist(-0.3f, 0.3f);
+        std::uniform_real_distribution<float> velDist(-0.1f, 0.1f);
+        //random size integer
+        std::uniform_int_distribution<int> sizeDist(1, 10);
 
-        for (int i = 0; i < 5; i++) {
+
+        for (int i = 0; i < 1; i++) {
             Vec3f randomPos(pos[0] + posDist(gen), pos[1] + posDist(gen), pos[2] + posDist(gen));
-            Vec3f randomVel(vel[0] + velDist(gen), vel[1], vel[2] + velDist(gen));
-            particles.push_back(Particle(randomPos, randomVel, size, lifespan));
+            Vec3f randomVel(vel[0] + velDist(gen), vel[1]+ velDist(gen), vel[2] + velDist(gen));
+            particles.push_back(Particle(randomPos, randomVel, sizeDist(gen), lifespan));
         }
    
 }

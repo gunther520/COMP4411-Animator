@@ -75,7 +75,7 @@ public:
 	bool isSimulate() { return simulate; }
 	bool isDirty() { return dirty; }
 	void setDirty(bool d) { dirty = d; }
-	void spawnParticle(const Vec3f& pos = Vec3f(0,0,0), const Vec3f& vel= Vec3f(0, 0, 0), float size=5.0f, float lifespan = 50.0f);
+	void spawnParticle(const Vec3f& pos = Vec3f(0,0,0), const Vec3f& vel= Vec3f(0, 0, 0), float size=5.0f, float lifespan = 2.0f);
 
 
 

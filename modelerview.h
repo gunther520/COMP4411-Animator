@@ -8,12 +8,13 @@
 
 #ifndef MODELERVIEW_H
 #define MODELERVIEW_H
-
+#include "mat.h"
 #include <FL/Fl_Gl_Window.H>
 
 class Camera;
 class ModelerView;
 typedef ModelerView* (*ModelerViewCreator_f)(int x, int y, int w, int h, char *label);
+
 
 typedef enum { CTRL_MODE, CURVE_MODE } cam_mode_t;
 
@@ -29,6 +30,7 @@ public:
 	void setBMP(const char *fname);
 	void saveBMP(const char* szFileName);
 	void endDraw();
+	Mat4f getViewModelMatrix();
 
 	void camera(cam_mode_t mode);
     Camera *m_camera;

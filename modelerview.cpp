@@ -16,6 +16,17 @@ static const int	kMouseZoomButton				= FL_RIGHT_MOUSE;
 
 static const char *bmp_name = NULL;
 
+Mat4f ModelerView::getViewModelMatrix()
+{
+	GLfloat m[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, m);
+	Mat4f matMV(m[0], m[1], m[2], m[3],
+		m[4], m[5], m[6], m[7],
+		m[8], m[9], m[10], m[11],
+		m[12], m[13], m[14], m[15]);
+	return  matMV.transpose(); // because the matrix GL returns is column major
+}
+
 ModelerView::ModelerView(int x, int y, int w, int h, char *label)
 : Fl_Gl_Window(x,y,w,h,label), t(0), save_bmp(false) 
 {
