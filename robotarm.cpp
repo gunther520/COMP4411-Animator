@@ -191,7 +191,7 @@ void SampleModel::draw()
 	//get the global position of the particle
 
 
-	auto gopos = mat * pos;
+	auto gopos = mat1.inverse() * mat * pos;
 
 	//normalize the position and velocity
 	Vec3f position = Vec3f(gopos[0], gopos[1], gopos[2]);
