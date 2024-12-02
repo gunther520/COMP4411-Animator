@@ -25,6 +25,48 @@ public:
 		return sqrtf(xd * xd + yd * yd);
 	}
 
+	//operators
+	Point operator+(const Point& p) const {
+		return Point(x + p.x, y + p.y);
+	}
+
+	Point operator-(const Point& p) const {
+		return Point(x - p.x, y - p.y);
+	}
+
+	Point operator*(const float f) const {
+		return Point(x * f, y * f);
+	}
+
+	Point operator/(const float f) const {
+		return Point(x / f, y / f);
+	}
+
+	Point& operator+=(const Point& p) {
+		x += p.x;
+		y += p.y;
+		return *this;
+	}
+
+	Point& operator-=(const Point& p) {
+		x -= p.x;
+		y -= p.y;
+		return *this;
+	}
+
+	Point& operator*=(const float f) {
+		x *= f;
+		y *= f;
+		return *this;
+	}
+
+	Point& operator/=(const float f) {
+		x /= f;
+		y /= f;
+		return *this;
+	}
+
+
 	float x;
 	float y;
 };

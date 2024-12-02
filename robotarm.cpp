@@ -4,10 +4,11 @@
 #include "modelerapp.h"
 #include "modelerdraw.h"
 #include <FL/gl.h>
-
+#include "mat.h"
 #include "modelerglobals.h"
 #include <math.h>
 #include <chrono>
+#include "particleSystem.h"
 
 // To make a SampleModel, we inherit off of ModelerView
 class SampleModel : public ModelerView
@@ -33,6 +34,13 @@ ModelerView* createSampleModel(int x, int y, int w, int h, char* label)
 // method of ModelerView to draw out SampleModel
 void SampleModel::draw()
 {
+	GLfloat matrix1[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, matrix1);
+	// change the matrix to a Mat4f
+	//create a Mat4f object that is 0
+	Mat4f mat1;
+	mat1.getGLMatrix(matrix1);
+
 	// This call takes care of a lot of the nasty projection 
 	// matrix stuff.  Unless you want to fudge directly with the 
 	// projection matrix, don't bother with this ...
@@ -166,6 +174,32 @@ void SampleModel::draw()
 
 	drawRhombus(0.8, 0.4);
 
+	glPushMatrix();//particle
+	//get the current transformation matrix
+	GLfloat matrix[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+	// change the matrix to a Mat4f
+	//create a Mat4f object that is 0
+	Mat4f mat;
+	mat.getGLMatrix(matrix);
+
+	//get the current local position of the particle
+
+	//transform the position of the particle 
+	Vec4f pos = Vec4f(0, 0, 0,1);
+
+	//get the global position of the particle
+
+
+	auto gopos = mat1.inverse() * mat * pos;
+
+	//normalize the position and velocity
+	Vec3f position = Vec3f(gopos[0], gopos[1], gopos[2]);
+	Vec3f velocity = Vec3f(0, 0, 0);
+
+
+	ModelerApplication::Instance()->GetParticleSystem()->spawnParticle(position, velocity, 10.0, 3.0f);
+	glPopMatrix();
 
 	glPopMatrix();
 	glPopMatrix();
@@ -252,6 +286,7 @@ void SampleModel::draw()
 	//glPopMatrix();
 
 	glPopMatrix();
+	endDraw();
 }
 
 int main()
@@ -285,5 +320,12 @@ int main()
 
 
 	ModelerApplication::Instance()->Init(&createSampleModel, controls, NUMCONTROLS);
+
+	ParticleSystem* ps = new ParticleSystem();
+
+	// do some more particle system setup
+
+
+	ModelerApplication::Instance()->SetParticleSystem(ps);
 	return ModelerApplication::Instance()->Run();
 }

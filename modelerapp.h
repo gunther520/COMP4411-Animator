@@ -64,6 +64,8 @@ public:
 
 	// Returns animating flag
 	bool Animating();
+	// Particle System variables
+	ParticleSystem* ps;
 
 private:
 	// Private for singleton
@@ -83,8 +85,7 @@ private:
 	// Just a flag for updates
 	bool m_animating;
 
-	// Particle System variables
-	ParticleSystem *ps;
+
 };
 
 #endif

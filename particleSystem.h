@@ -17,6 +17,10 @@
 #define __PARTICLE_SYSTEM_H__
 
 #include "vec.h"
+#include <map>
+#include <vector>
+#include <FL/gl.h>
+#include "Particle.h"
 
 
 
@@ -71,12 +75,14 @@ public:
 	bool isSimulate() { return simulate; }
 	bool isDirty() { return dirty; }
 	void setDirty(bool d) { dirty = d; }
+	void spawnParticle(const Vec3f& pos = Vec3f(0,0,0), const Vec3f& vel= Vec3f(0, 0, 0), float size=5.0f, float lifespan = 50.0f);
 
 
 
 protected:
 	
-
+	vector<Particle> particles;			// vector of particles
+	map< float, vector<Particle> > bakedParticles;
 
 	/** Some baking-related state **/
 	float bake_fps;						// frame rate at which simulation was baked
