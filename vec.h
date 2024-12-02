@@ -36,12 +36,15 @@ class VectorSizeMismatch {};
 
 template <class T>
 class Vec {
-		// array of elements
-	T*		n;
+
 		// vector size
-	int		numElements;
+
 
 public:
+	// array of elements
+	T* n;
+
+	int		numElements;
 
 	//---[ Constructors/Destructor ]-------------
 
@@ -146,9 +149,10 @@ class Vec3 {
 	//---[ Private Variable Declarations ]-------
 
 		// x, y, z
-	T		n[3];
+
 
 public:
+	T		n[3];
 
 	//---[ Constructors ]------------------------
 
@@ -267,10 +271,10 @@ class Vec4 {
 	//---[ Private Variable Declarations ]-------
 
 		// x, y, z, w
-	T		n[4];
+
 
 public:
-	
+	T		n[4];
 	//---[ Constructors ]------------------------
 
 	Vec4() { n[0] = 0.0; n[1] = 0.0; n[2] = 0.0; n[3] = 0.0; }
